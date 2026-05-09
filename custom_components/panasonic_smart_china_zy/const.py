@@ -6,7 +6,7 @@ from homeassistant.components.climate.const import (
     FAN_HIGH,
 )
 
-DOMAIN = "panasonic_smart_china"
+DOMAIN = "panasonic_smart_china_zy"
 
 CONF_USR_ID = "usrId"
 CONF_DEVICE_ID = "deviceId"
