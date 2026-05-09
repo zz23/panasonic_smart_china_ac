@@ -1,7 +1,8 @@
 {
   "domain": "panasonic_smart_china_zy",
   "name": "Panasonic Smart China ZY Custom",
-  "documentation": "https://github.com/mcdona1d/panasonic_smart_china",
+  "documentation": "https://github.com/zz23/panasonic_smart_china_ac",
+  "issue_tracker": "https://github.com/zz23/panasonic_smart_china_ac/issues",
   "dependencies": [],
   "codeowners": [],
   "requirements": [],
