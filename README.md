@@ -1,4 +1,4 @@
-# Panasonic Smart China for Home Assistant
+# Panasonic Smart China ac for Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 [![version](https://img.shields.io/badge/version-1.0.0-blue.svg)]()
