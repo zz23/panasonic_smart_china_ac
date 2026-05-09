@@ -58,6 +58,13 @@ class PanasonicSmartDevice:
     def temperature_keys(self):
         return self.profile.get("temperature_keys", ["setTemperature"])
 
+    @property
+    def current_temperature_keys(self):
+        return self.profile.get(
+            "current_temperature_keys",
+            ["inhaleTemperature", "insideTemperature", "preTemperature"],
+        )
+
     def is_on(self, params):
         return params.get("runStatus") == self.power_on_value
 
@@ -74,6 +81,20 @@ class PanasonicSmartDevice:
 
     def build_temperature_payload(self, temperature):
         return {self.temperature_keys[0]: int(temperature * self.temp_scale)}
+
+    def read_current_temperature(self, params):
+        for key in self.current_temperature_keys:
+            value = params.get(key)
+            if value is None:
+                continue
+            try:
+                temperature = float(value)
+            except (TypeError, ValueError):
+                continue
+            if temperature > 80:
+                temperature = temperature / self.temp_scale
+            return temperature
+        return None
 
     async def fetch_status(self):
         headers = self._get_headers()

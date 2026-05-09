@@ -15,6 +15,8 @@ CONF_SSID = "SSID"
 CONF_SENSOR_ID = "sensor_entity_id"
 CONF_CONTROLLER_MODEL = "controller_model"
 
+NO_EXTERNAL_SENSOR = ""
+
 URL_SET = "https://app.psmartcloud.com/App/ACDevSetStatusInfoAW"
 URL_GET = "https://app.psmartcloud.com/App/ACDevGetStatusInfoAW"
 
@@ -128,6 +130,11 @@ SUPPORTED_CONTROLLERS = {
         "name": "Panasonic ducted controller CZ-RD501DW2",
         "temp_scale": 2,
         "temperature_keys": ["setTemperature"],
+        "current_temperature_keys": [
+            "inhaleTemperature",
+            "insideTemperature",
+            "preTemperature",
+        ],
         "power_on_value": 1,
         "power_off_value": 0,
         "hvac_mapping": {
@@ -172,6 +179,12 @@ SUPPORTED_CONTROLLERS = {
         "set_url": "https://app.psmartcloud.com/App/ACDevSetStatusNewProtocol",
         "temp_scale": 1,
         "temperature_keys": ["setTemperature", "temperatureSet", "temperature"],
+        "current_temperature_keys": [
+            "inhaleTemperature",
+            "insideTemperature",
+            "preTemperature",
+            "douleTemperature",
+        ],
         "power_on_value": 48,
         "power_off_value": 49,
         "hvac_mapping": {

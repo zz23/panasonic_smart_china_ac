@@ -16,7 +16,7 @@ from homeassistant.const import (
 from homeassistant.helpers.event import async_track_time_interval
 
 from .api import PanasonicSmartDevice
-from .const import CONF_SENSOR_ID, FAN_MUTE
+from .const import CONF_SENSOR_ID, FAN_MUTE, NO_EXTERNAL_SENSOR
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -31,7 +31,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 class PanasonicACEntity(ClimateEntity):
     def __init__(self, hass, config, name):
         self._hass = hass
-        self._sensor_id = config[CONF_SENSOR_ID]
+        self._sensor_id = config.get(CONF_SENSOR_ID, NO_EXTERNAL_SENSOR)
         self._device = PanasonicSmartDevice(hass, config, name)
         self._profile = self._device.profile
         self._attr_name = name
@@ -45,6 +45,7 @@ class PanasonicACEntity(ClimateEntity):
 
         self._is_on = False
         self._hvac_mode = next(iter(self._hvac_map.keys()), HVACMode.COOL)
+        self._current_temperature = None
         self._target_temperature = 26.0
         self._fan_mode = FAN_AUTO
         self._swing_mode = self._first_mode(self._vertical_swing_map)
@@ -157,13 +158,17 @@ class PanasonicACEntity(ClimateEntity):
 
     @property
     def current_temperature(self):
-        state = self._hass.states.get(self._sensor_id)
+        if self._sensor_id and self._sensor_id != NO_EXTERNAL_SENSOR:
+            state = self._hass.states.get(self._sensor_id)
+        else:
+            state = None
+
         if state and state.state not in (STATE_UNAVAILABLE, STATE_UNKNOWN):
             try:
                 return float(state.state)
             except ValueError:
                 pass
-        return None
+        return self._current_temperature
 
     @property
     def target_temperature(self):
@@ -180,6 +185,7 @@ class PanasonicACEntity(ClimateEntity):
             res,
             self._target_temperature,
         )
+        self._current_temperature = self._device.read_current_temperature(res)
 
         self._hvac_mode = self._mode_from_value(
             self._hvac_map,
